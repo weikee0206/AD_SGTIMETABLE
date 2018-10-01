@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Class</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+
+      <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+      		<link rel="stylesheet" href="../css/mescroll.min.css">
+      <script src="./script/fastclick.js"></script>
+      <script>
+       if ('addEventListener' in document) {
+         document.addEventListener('DOMContentLoaded', function() {
+            FastClick.attach(document.body);
+         }, false);
+       }
+     </script>
+    <style>
+    html body{
+      padding: 0px;
+      margin: 0px;
+    }
+        .empty{ text-align: center; padding: 120px 0; }
+        /*customize*/
+       .card{
+         margin: 3%;
+         width: 94%;
+         line-height: 26px;
+
+         border-radius: 20px;
+         background-color: #fff;
+         box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+       }
+       .innerContainer{
+
+         padding: 10px 20px 20px 20px;
+       }
+       .aui-hr{
+         background-color: #000;
+       }
+       .hrDot{
+         border-bottom:3px dotted #000000;
+       }
+       .time{
+         padding: 20px 0 0 0px;
+         font-size: 20px;
+         float: left;
+       }
+       .Status{
+         padding: 20px 10px 0 0;
+       }
+       h1{
+         color: #FF4472;
+       }
+    </style>
+</head>
+<body>
+
+  <div id="mescroll" class="mescroll">
+  	   		<div id="cardList">
+
+  	    		</div>
+  	    	</div>
+
+  <!-- <div class="card">
+    <div class="innerContainer">
+<p class="time" id="time">12:00 PM - 3:00 PM</p>
+<div class="aui-pull-right Status"><div class="aui-label aui-label-info" id="status">Comming</div></div>
+<div><img src="dot.png" width="100%" alt=""></div>
+<div>
+  <p class="location" id="location">Campus:Marina Square</p>
+  <p class="course" id="course">Course:SET-FT CS217_317 Agile Development</p>
+  <p class="lecturer" id="lecturer">Lecturer:Bay Siew Ngoh June</p>
+</div>
+<p>
+Room:</p>
+<h1 id="room">B05/B06</h1>
+    </div>
+  </div> -->
+
+
+
+    <input type="text" id="userId" style="display: none;">
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/mescroll.min.js"></script>
+<script type="text/javascript" src="../script/jquery-1.11.1.min.js"></script>
+<script>
+apiready = function () {
+//setlisen
+
+api.getPrefs({
+  key: 'userinfo'
+}, function(ret, err) {
+  if (ret.value!='') {
+    var val = ret.value;
+      userdetail = $api.strToJson(ret.value);
+      document.getElementById('userId').value = userdetail['id'];
+      loadList();
+  }
+});
+
+api.addEventListener({
+    name: 'loading'
+}, function(ret, err) {
+location.reload();
+});
+
+}
+
+function loadList(){
+mescroll = new MeScroll("mescroll", {
+  down: {
+    auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+    callback: downCallback //下拉刷新的回调
+  },
+  up: {
+    auto: true, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+    isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+    callback: upCallback, //上拉回调,此处可简写; 相当于 callback: function (page) { upCallback(page); }
+    toTop:{ //配置回到顶部按钮
+      src : "../res/img/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+      //offset : 1000
+    }
+  }
+});
+}
+			//创建MeScroll对象
+
+			/*下拉刷新的回调 */
+			function downCallback(){
+				//联网加载数据
+				getListDataFromNet(function(data){
+					//联网成功的回调,隐藏下拉刷新的状态
+					mescroll.endSuccess();
+					//设置列表数据
+					setListData(data, false);
+				}, function(){
+					//联网失败的回调,隐藏下拉刷新的状态
+	                mescroll.endErr();
+				});
+			}
+
+			/*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+			function upCallback(page){
+				//联网加载数据
+				getListDataFromNet(function(curPageData){
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					//mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+
+					//方法一(推荐): 后台接口有返回列表的总页数 totalPage
+					//mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+					//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+					//mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+					//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+					//mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+
+					//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+					mescroll.endSuccess(curPageData.length);
+
+					//设置列表数据
+					setListData(curPageData, true);
+				}, function(){
+					//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+	                mescroll.endErr();
+				});
+			}
+
+			/*设置列表数据*/
+			function setListData(curPageData, isAppend) {
+				var listDom=document.getElementById("cardList");
+				if (!isAppend) {listDom.innerHTML = "";}
+				for (var i = 0; i < curPageData.length; i++) {
+					var newObj=curPageData[i];
+
+
+					var str='<div class="card"><div class="innerContainer"><p class="time" id="time">'+newObj.time+'</p>';
+          str+='<div class="aui-pull-right Status"><div class="aui-label aui-label-info" id="status">'+newObj.time+'</div></div><div><img src="dot.png" width="100%" alt=""></div><div><p class="location" id="location">Campus:'+newObj.location;
+          str+='</p><p class="course" id="course">Course:'+newObj.Description+'</p><p class="lecturer" id="lecturer">Lecturer:'+newObj.lecturer+'</p></div><p>Room:</p><h1 id="room">';
+          str+= newObj.room+'</h1></div></div>';
+          var liDom=document.createElement("div");
+					liDom.innerHTML=str;
+
+					if (isAppend) {
+						listDom.appendChild(liDom);//加在列表的后面,上拉加载
+					} else {
+						listDom.appendChild(liDom);//加在列表的前面,下拉刷新
+
+					}
+				}
+			}
+
+			/*联网加载列表数据
+			 在您的实际项目中,请参考官方写法: http://www.mescroll.com/api.html#tagUpCallback
+			 请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
+			 实际项目以您服务器接口返回的数据为准,无需本地处理分页.
+			 * */
+			var downIndex=0;
+			function getListDataFromNet(successCallback,errorCallback) {
+        userid = document.getElementById('userId').value;
+				$.ajax({
+    url: 'http://redian.io/timetable/getTomorrowData.php',
+    type: "POST",
+    dataType:'json',
+    data: {
+    userid: userid
+   },
+    success: function (data) {
+
+        var newArr=[];
+      for (var i = 0; i < data.count; i++) {
+                  var newObj={id:data.classList[i].id, Description:data.classList[i].Description, time:data.classList[i].time, room:data.classList[i].room, lecturer:data.classList[i].lecturer, location:data.classList[i].location};
+                          newArr.push(newObj);
+                        }
+
+        successCallback&&successCallback(newArr);
+
+  }
+});
+
+
+			}
+
+
+</script>
+</html>
