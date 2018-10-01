@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        .empty{ text-align: center; padding: 120px 0; }
+        .footer{
+          bottom: 0px;
+          text-align: center;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="empty" tapmode onclick="quit()">Quit</div>
+    <!-- <div class="footer">Power By 热点新加坡</div> -->
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.11.1.min.js"></script>
+<script>
+function quit(){
+  api.removePrefs({
+      key: 'userinfo'
+  });
+  api.openWin({
+    name: 'login',
+    url: './login.html',
+    bounces: false,
+    slidBackEnabled: true,
+    animation:{
+  type:"movein",                //动画类型（详见动画类型常量）
+  subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+  duration:300                //动画过渡时间，默认300毫秒
+  },
+    vScrollBarEnabled: false
+  });
+
+}
+</script>
+</html>

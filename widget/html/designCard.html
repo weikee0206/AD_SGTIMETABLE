@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+
+      <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+      <script src="./script/fastclick.js"></script>
+      <script>
+       if ('addEventListener' in document) {
+         document.addEventListener('DOMContentLoaded', function() {
+            FastClick.attach(document.body);
+         }, false);
+       }
+     </script>
+    <style>
+        header{ background-color: #fff; }
+        header ul li { height: 75px; line-height: 50px; text-align: center; display: none; position: relative;font-size: 14px;}
+        header ul li.active{ display: block; }
+        #footer{  background-color: #fff; }
+        #footer ul li{  padding-top: 36px; padding-bottom: 4px; background: url() no-repeat center 2px; background-size: auto 30px; text-align: center; }
+        #footer ul li.active{ color: #FF4472; }
+        #footer ul li:nth-child(1){ background-image: url(./image/b0.png); }
+        #footer ul li:nth-child(2){ background-image: url(./image/b2.png); }
+        #footer ul li:nth-child(3){ background-image: url(./image/b1.png); }
+        #footer ul li:nth-child(1).active{ background-image: url(./image/b0-select.png); }
+        #footer ul li:nth-child(2).active{ background-image: url(./image/b2-select.png); }
+        #footer ul li:nth-child(3).active{ background-image: url(./image/b1-select.png); }
+        .flex-con{
+          overflow: auto;
+          color: #999999;
+        }
+        .aui-bar-nav{
+          background-color: #FF4472;
+        }
+        .aui-bar-nav .aui-bar-btn-item.aui-active{
+          color: #FF4472;
+        }
+
+        /*customize*/
+       .card{
+         margin: 3%;
+         width: 94%;
+
+         border-radius: 20px;
+         background-color: #fff;
+         box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+       }
+       .innerContainer{
+
+         margin: 10px 20px 30px 20px;
+       }
+       .aui-hr{
+         background-color: #000;
+       }
+       .hrDot{
+         border-bottom:3px dotted #000000;
+       }
+       .time{
+         padding: 20px 0 0 10px;
+         font-size: 20px;
+         float: left;
+       }
+       .Status{
+         padding: 20px 10px 0 0;
+       }
+       h1{
+         color: #FF4472;
+       }
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+    <header>
+        <ul>
+            <li class="border-b active"><header class="aui-bar aui-bar-nav" style="padding-top:25px;">
+    <div class="aui-bar aui-bar-btn aui-bar-btn-round" id="tabControl">
+        <div class="aui-bar-btn-item aui-active">Today</div>
+        <div class="aui-bar-btn-item">Tomorrow</div>
+    </div>
+</header></li>
+            <li class="border-b" style="padding-top:25px;">School Active</li>
+            <li class="border-b" style="padding-top:25px;">Account Setting</li>
+        </ul>
+    </header>
+
+
+    <div id="main" class="card">
+      <div class="innerContainer">
+<p class="time" id="time">12:00 PM - 3:00 PM</p>
+<div class="aui-pull-right Status"><div class="aui-label aui-label-info" id="status">Comming</div></div>
+<div><img src="dot.png" width="100%" alt=""></div>
+
+
+  <div>
+    <div class="location" id="location">Campus:Marina Square</div>
+    <div class="course" id="course">Course:SET-FT CS217_317 Agile Development</div>
+    <div class="lecturer" id="lecturer">Lecturer:Bay Siew Ngoh June</div>
+
+  </div>
+
+  <div>
+  Room:
+  <h1>B05/B06</h1>
+
+</div>
+
+      </div>
+    </div>
+
+
+    <!-- <div class="aui-row">
+
+      <div class="aui-col-xs-8">
+        <div class="location" id="location">Campus:Marina Square</div>
+        <div class="course" id="course">Course:SET-FT CS217_317 Agile Development</div>
+        <div class="lecturer" id="lecturer">Lecturer:Bay Siew Ngoh June</div>
+
+      </div>
+      <div style="width:10px;">&nbsp;</div>
+      <div class="aui-col-xs-4">
+      Room:
+      <h1>B05/B06</h1>
+      </div>
+    </div> -->
+
+    <div id="footer" class="border-t">
+        <ul class="flex-wrap" >
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active" >Class</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >Active</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >Account</li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-tab.js"></script>
+<script type="text/javascript">
+    var tab = new auiTab({
+        element:document.getElementById("tabControl"),
+        index:1,
+        repeatClick:false
+    },function(ret){
+        console.log(ret);
+    });
+</script>

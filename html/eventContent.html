@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>内容框架</title>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+  <style>
+  html body{
+    background-color: #fff;
+  }
+.contentBox{
+  margin: 10px;
+  font-family: 'Noto Sans', sans-serif;
+}
+.content{
+  margin-top: 0;
+  line-height: 1.6;
+}
+.content p{
+  margin-bottom: 1.6em;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 350;
+  color: #000;
+  font-size: 18px
+}
+a:link {
+  color:#000;
+  text-decoration:underline;
+}
+.content img{
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
+  clear: both;
+  margin-top: 0.4em;
+  margin-bottom: 1.6em;
+}
+</style>
+</head>
+
+<body>
+  <div id="back"><img width="100%" src="../image/back.png"></div>
+  <div class="contentBox">
+<h1 id="title"></h1>
+<div class="content" id="content"></div>
+</div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script src="../script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    var id = api["pageParam"]["id"];
+
+        api.parseTapmode();
+
+        $.ajax({
+            // url: 'http://hotspotsg.com/api/get_recent_posts/?callback=show_posts_widget&include=title,date&count',
+            url: 'https://hotspotsg.com/?json=get_post&post_id='+id,
+            dataType: 'json',
+            jsonpCallback:"datas",
+            async:'false',
+            success: function (data) {
+              document.getElementById("back").hidden = true;
+             dataTitle = data.post.title;
+             dataContent = data.post.content;
+             document.getElementById("content").innerHTML = dataContent;
+             document.getElementById("title").innerHTML = dataTitle;
+
+            }
+        });
+
+
+}
+
+
+
+
+
+
+</script>
+
+</html>
