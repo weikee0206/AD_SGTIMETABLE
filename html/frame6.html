@@ -22,7 +22,7 @@
     html body{
       padding: 0px;
       margin: 0px;
-      background-color: #fff;
+            background-color: #fff;
     }
         .empty{ text-align: center; padding: 120px 0; }
         /*customize*/
@@ -62,9 +62,11 @@
 
   <div id="mescroll" class="mescroll">
   	   		<div id="cardList">
+
   	    		</div>
             <div id="noclass" hidden="true"><img width="100%" src="../image/noclass.png" ></div>
   	    	</div>
+
   <!-- <div class="card">
     <div class="innerContainer">
 <p class="time" id="time">12:00 PM - 3:00 PM</p>
@@ -177,22 +179,10 @@ mescroll = new MeScroll("mescroll", {
 				if (!isAppend) {listDom.innerHTML = "";}
 				for (var i = 0; i < curPageData.length; i++) {
 					var newObj=curPageData[i];
-          switch (newObj.status) {
-            case '1':
-              var status = '<div class="aui-label aui-label-info">Schdualed</div>';
-              break;
-            case '2':
-            var status = '<div class="aui-label aui-label-warning">In Process</div>';
-              break;
-            case '3':
-            var status = '<div class="aui-label aui-label-success">Finished</div>';
-              break;
-
-          }
 
 
 					var str='<div class="card"><div class="innerContainer"><p class="time" id="time">'+newObj.time+'</p>';
-          str+='<div class="aui-pull-right Status">'+ status +'</div><div><img src="dot.png" width="100%" alt=""></div><div><p class="location" id="location">Campus:'+newObj.location;
+          str+='<div class="aui-pull-right Status"><div class="aui-label aui-label-info" id="status">Schdualed</div></div><div><img src="dot.png" width="100%" alt=""></div><div><p class="location" id="location">Campus:'+newObj.location;
           str+='</p><p class="course" id="course">Course:'+newObj.Description+'</p><p class="lecturer" id="lecturer">Lecturer:'+newObj.lecturer+'</p></div><p>Room:</p><h1 id="room">';
           str+= newObj.room+'</h1></div></div>';
           var liDom=document.createElement("div");
@@ -216,25 +206,26 @@ mescroll = new MeScroll("mescroll", {
 			function getListDataFromNet(successCallback,errorCallback) {
         userid = document.getElementById('userId').value;
 				$.ajax({
-    url: 'http://redian.io/timetable/getTodayClass-t.php',
+    url: 'http://redian.io/timetable/getTomorrowData-t.php',
     type: "POST",
     dataType:'json',
     data: {
     userid: userid
    },
     success: function (data) {
-    	var newArr=[];
       if (data.count=='0') {
         document.getElementById('noclass').hidden = false;
       } else {
         document.getElementById('noclass').hidden = true;
       }
-    for (var i = 0; i < data.count; i++) {
-	              var newObj={id:data.classList[i].id, Description:data.classList[i].Description, time:data.classList[i].time, status:data.classList[i].status, room:data.classList[i].room, lecturer:data.classList[i].lecturer, location:data.classList[i].location};
-	                			newArr.push(newObj);
-	                		}
+        var newArr=[];
+      for (var i = 0; i < data.count; i++) {
+                  var newObj={id:data.classList[i].id, Description:data.classList[i].Description, time:data.classList[i].time, room:data.classList[i].room, lecturer:data.classList[i].lecturer, location:data.classList[i].location};
+                          newArr.push(newObj);
+                        }
 
-      successCallback&&successCallback(newArr);
+        successCallback&&successCallback(newArr);
+
   }
 });
 

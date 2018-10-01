@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>内容框架</title>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+  <style>
+  html body{
+    background-color: #fff;
+  }
+
+  .aui-bar-light {
+    color: #fff;
+  }
+
+  .aui-bar-nav.aui-bar-light .aui-iconfont {
+    color: #fff;
+  }
+
+  .aui-bar{
+    position: fixed;
+    background-color: #FF4472;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+    line-height: 1rem;
+  }
+</style>
+</head>
+
+<body>
+  <header class="aui-bar aui-bar-nav aui-bar-light" id="header" style="padding-top:25px;">
+    <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+      <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+  </header>
+
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    var id = api["pageParam"]["id"];
+        // document.getElementById("insert").innerHTML = '房源ID:' + id;
+        api.parseTapmode();
+
+
+        var header = $api.byId('header');
+
+        var headerH = $api.offset(header).h + 2;
+
+    //frame的高度为当前window高度减去header和footer的高度
+    var frameH = api.winHeight - headerH;
+
+
+
+        api.openFrame({
+          name: 'eventContent',
+          url: 'eventContent.html',
+          bounces: true,
+          vScrollBarEnabled: false,
+          pageParam: {
+            id: id
+          },
+          rect: {
+            x: 0,
+            y: headerH,
+            w: 'auto',
+            h: frameH
+          }
+        });
+
+}
+
+
+  function closeWin() {
+    api.closeWin({});
+  }
+
+
+
+
+</script>
+
+</html>

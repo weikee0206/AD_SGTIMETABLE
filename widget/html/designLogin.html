@@ -55,10 +55,6 @@
 .aui-list .aui-list-item{
   padding-left: 0.5rem;
 }
-.aui-list-item-label{
-  font-size: 14px;
-}
-
     </style>
 </head>
 <body>
@@ -73,14 +69,8 @@
                       Module Code:
                   </div>
                   <div class="aui-list-item-input">
-                    <div class="aui-list-item-input">
-                      <div class="selectBox">
-                    <select id="moduleSelect">
-                    </select>
-                </div>
-              </div>
+                      <input type="text" placeholder="FT CS 217">
                   </div>
-
               </div>
           </li>
 
@@ -90,14 +80,14 @@
                             Student Name:
                           </div>
                           <div class="aui-list-item-input">
-                              <input type="text" id="name">
+                              <input type="text" placeholder="Kevin S">
                           </div>
                       </div>
                   </li>
         </ul>
       </div>
 
-<button class="submit" tapmode onclick="login()">START</button>
+<button class="submit">COMFIRM</button>
 
 </div>
 
@@ -107,101 +97,7 @@
 </body>
 </html>
 <script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../script/aui-tab.js"></script>
 <script type="text/javascript">
-apiready = function () {
-  $.ajax({
-      url: 'http://redian.io/timetable/getModuleCode.php',
-      type: "POST",
-      dataType:'json',
-      success: function (data) {
 
-        for (var i = 0; i < data.count; i++) {
-  addElementDiv(data.codeList[i].id,data.codeList[i].moduleName);
-
-}
-}
-
-  });
-}
-
-function addElementDiv(moduleId,moduleCode) {
-　　　　var parent = document.getElementById('moduleSelect');
-　　　　var div = document.createElement("option");
-　     div.setAttribute("id", "newDiv");
-　　　　div.innerHTML = moduleCode;
-       div.value = moduleId;
-　　　　parent.appendChild(div);
-　　}
-
-function login(){
-  api.showProgress({
-      style: 'default',
-      animationType: 'fade',
-      title: '努力加载中...',
-      text: '先喝杯茶...',
-      modal: false
-  });
-
-  var  myselect=document.getElementById("moduleSelect");
-  var index=myselect.selectedIndex;
-  var moduleId = myselect.options[index].value;
-  var moduleName = myselect.options[index].text;
-var name = document.getElementById('name').value;
-
-if (name=='') {
-alert("Please fill up the form.");
-api.hideProgress();
-} else {
-
-  $.ajax({
-url: 'http://redian.io/timetable/newUser-t.php',
-type: "POST",
-dataType:'json',
-data: {
-username: name,
-moduleId: moduleId
-},
-success: function (data) {
-  api.setPrefs({
-    key: 'userinfo',
-    value: {
-      id: data.userid,
-      name: name,
-      moduleName: moduleName
-    }
-  });
-if (navigator.language=='zh-CN') {
-  group = 'chinese';
-} else {
-  group = 'english';
-}
-
-  var push = api.require('push');
-  push.bind({
-   userId: data.userid,
-   userName:name
- },function(ret,err){
- });
-
-  push.joinGroup({
-    groupName: group
-  },function(ret,err){
-  });
-
-api.sendEvent({name: 'loading'});
-api.hideProgress();
-api.closeWin({
-  animation: {
-            type: "reveal", //动画类型（详见动画类型常量）
-            subType: "from_top", //动画子类型（详见动画子类型常量）
-            duration: 300
-          }
-        });
-}
-});
-
-}
-
-}
 </script>
